@@ -15,8 +15,10 @@ namespace ConsoleApp_Groep5_Restaurant.Classes
 
         public List<Bestelling> Bestellingen { get; set; }
 
+        public Reservering()
+        {
 
-        public string Status { get; set; }
+        }
 
 
         
