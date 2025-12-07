@@ -74,6 +74,39 @@ namespace ConsoleApp_Groep5_Restaurant.DattaAcces
                 }
             }
         }
+        
+        public List<Reservering> HaalReserveringOpUitDB()
+        {
+            List<Reservering> reserveringen = new List<Reservering>();
+            using (SqlConnection connection = new SqlConnection())
+            {
+                using (SqlCommand command = new SqlCommand())
+                {
+                    connection.ConnectionString = connectionString;
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = @"select g.Naam,g.TelefoonNummer, r.AantalPersonen, r.DatumTijd
+                                            from Reservering R
+                                            Join Gast G on R.GastID = g.Id";
 
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Reservering reservering = new Reservering();
+                            reservering.gast = new Gast(reader.GetString(0),reader.GetString(1));
+                            reservering.AantalPersonen = reader.GetInt32(2);
+                            reservering.DatumTijd = reader.GetDateTime(3);
+
+                            reserveringen.Add(reservering);
+                        }
+                    }
+                    connection.Close();
+
+                }
+            }
+
+            return reserveringen;
+        }
     }
 }

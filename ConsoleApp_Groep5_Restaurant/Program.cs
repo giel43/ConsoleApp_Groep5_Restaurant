@@ -46,9 +46,27 @@ namespace ConsoleApp_Groep5_Restaurant
                                 Console.WriteLine("Voor hoeveel personen is de reservering:");
                                 int HvlPersonen = int.Parse(Console.ReadLine());
 
+                                Console.WriteLine("Hoelaat wil je reserveren\n1. 7 uur\n2. 8 uur\n3. 9 uur");
+                                int keuzeTijd = int.Parse(Console.ReadLine());
+
+                                
                                 Reservering reservering = new Reservering();
                                 reservering.AantalPersonen = HvlPersonen;
-                                reservering.DatumTijd = DateTime.Now;
+
+                                DateTime datum = DateTime.Today;
+                                if (keuzeTijd == 1)
+                                {
+                                    datum = datum.AddHours(19);
+                                }
+                                if (keuzeTijd == 2)
+                                {
+                                    datum = datum.AddHours(20);
+                                }
+                                if (keuzeTijd == 3)
+                                {
+                                    datum = datum.AddHours(21);
+                                }
+                                reservering.DatumTijd = datum;
                                 reservering.gast = gast;
                                 _dal.VoegGastToeAanDB(gast);
                                 _dal.VoegReserveringToeAanDB(reservering);
@@ -72,7 +90,23 @@ namespace ConsoleApp_Groep5_Restaurant
                 {
                     Console.Clear();
                     Console.WriteLine("1. Reserveringen bekijken");
-                    string werkNemerKeuse = Console.ReadLine();
+                    string werkNemerKeuze = Console.ReadLine();
+
+                    switch(werkNemerKeuze)
+                    {
+                        case "1":
+                            Console.Clear();
+                            List<Reservering> reserveringen = _dal.HaalReserveringOpUitDB();
+                            Console.WriteLine("Reserveringen\n");
+                            foreach(Reservering r in reserveringen)
+                            {
+                                Console.WriteLine($"Naam: { r.gast.Naam}, Aantal {r.AantalPersonen} personen, Tel: {r.gast.TelefoonNummer}, Datum/Tijd: {r.DatumTijd}\n");
+                            }
+
+                            Console.ReadLine();
+
+                            break;
+                    }
                 }
             }
         }
