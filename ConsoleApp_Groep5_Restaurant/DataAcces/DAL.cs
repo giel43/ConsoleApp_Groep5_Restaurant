@@ -87,7 +87,8 @@ namespace ConsoleApp_Groep5_Restaurant.DattaAcces
                     command.Connection = connection;
                     command.CommandText = @"select g.Naam,g.TelefoonNummer, r.AantalPersonen, r.DatumTijd
                                             from Reservering R
-                                            Join Gast G on R.GastID = g.Id";
+                                            Join Gast G on R.GastID = g.Id
+                                            order by DatumTijd desc;";
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
